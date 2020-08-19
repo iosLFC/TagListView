@@ -10,7 +10,8 @@ import UIKit
 
 @IBDesignable
 open class TagView: UIButton {
-
+    fileprivate var showLeftImage: Bool = false
+    
     @IBInspectable open var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
@@ -167,6 +168,15 @@ open class TagView: UIButton {
         setupView()
     }
     
+    public init(title: String, showLeftImage: Bool = false, leftImage: UIImage = UIImage()) {
+        super.init(frame: CGRect.zero)
+        setTitle(title, for: UIControl.State())
+        setImage(leftImage, for: .normal)
+        self.showLeftImage = showLeftImage
+        setupView()
+    }
+    
+    
     private func setupView() {
         titleLabel?.lineBreakMode = titleLineBreakMode
 
@@ -193,6 +203,9 @@ open class TagView: UIButton {
         }
         if enableRemoveButton {
             size.width += removeButtonIconSize + paddingX
+        }
+        if showLeftImage {
+            size.width += 30
         }
         return size
     }

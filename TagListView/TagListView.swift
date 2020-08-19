@@ -326,6 +326,39 @@ open class TagListView: UIView {
         }
         return CGSize(width: frame.width, height: height)
     }
+
+    private func createNewTagView(_ title: String, _ showLeftImage: Bool = false, _ leftImage: UIImage = UIImage()) -> TagView {
+        let tagView = TagView(title: title, showLeftImage: showLeftImage, leftImage: leftImage)
+
+        tagView.textColor = textColor
+        tagView.selectedTextColor = selectedTextColor
+        tagView.tagBackgroundColor = tagBackgroundColor
+        tagView.highlightedBackgroundColor = tagHighlightedBackgroundColor
+        tagView.selectedBackgroundColor = tagSelectedBackgroundColor
+        tagView.titleLineBreakMode = tagLineBreakMode
+        tagView.cornerRadius = cornerRadius
+        tagView.borderWidth = borderWidth
+        tagView.borderColor = borderColor
+        tagView.selectedBorderColor = selectedBorderColor
+        tagView.paddingX = paddingX
+        tagView.paddingY = paddingY
+        tagView.textFont = textFont
+        tagView.removeIconLineWidth = removeIconLineWidth
+        tagView.removeButtonIconSize = removeButtonIconSize
+        tagView.enableRemoveButton = enableRemoveButton
+        tagView.removeIconLineColor = removeIconLineColor
+        tagView.addTarget(self, action: #selector(tagPressed(_:)), for: .touchUpInside)
+        tagView.removeButton.addTarget(self, action: #selector(removeButtonPressed(_:)), for: .touchUpInside)
+        
+        // On long press, deselect all tags except this one
+        tagView.onLongPress = { [unowned self] this in
+            self.tagViews.forEach {
+                $0.isSelected = $0 == this
+            }
+        }
+        
+        return tagView
+    }
     
     private func createNewTagView(_ title: String) -> TagView {
         let tagView = TagView(title: title)
@@ -361,9 +394,9 @@ open class TagListView: UIView {
     }
 
     @discardableResult
-    open func addTag(_ title: String) -> TagView {
+    open func addTag(_ title: String, _ showLeftImage: Bool = false, _ leftImage: UIImage = UIImage()) -> TagView {
         defer { rearrangeViews() }
-        return addTagView(createNewTagView(title))
+        return addTagView(createNewTagView(title, showLeftImage, leftImage))
     }
     
     @discardableResult

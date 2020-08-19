@@ -51,6 +51,8 @@ class ViewController: UIViewController, TagListViewDelegate {
         biggestTagListView.textFont = .systemFont(ofSize: 24)
         // it is also possible to add all tags in one go
         biggestTagListView.addTags(["all", "your", "tag", "are", "belong", "to", "us"])
+        
+        biggestTagListView.addTag("添加个图片试试", true, UIImage.init(named: "tagIcon") ?? UIImage())
         biggestTagListView.alignment = .right
         
     }
